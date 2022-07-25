@@ -26,7 +26,7 @@ on run {args}
 				write MusicArtworkRaw to FileRef starting at 0
 				tell me to close access FileRef
 			on error m number n
-				display dialog "Image save failed." & m & n & ArtworkPath
+				-- display dialog "Image save failed." & m & n & ArtworkPath
 				try
 					tell me to close access FileRef
 				end try
@@ -35,7 +35,7 @@ on run {args}
 			-- return as expected
 			return {MusicState, MusicName, MusicArtist, MusicArtworkType}
 		on error
-			display dialog "Music is not available."
+			-- display dialog "Music is not available."
 			return
 		end try
 	end tell
