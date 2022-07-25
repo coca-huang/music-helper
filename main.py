@@ -8,7 +8,7 @@ import schedule
 
 
 def refresh_meta(dst: str | Path):
-    logging.info(f'refresh music meta')
+    logging.debug(f'refresh music meta')
     # get music meta with applescript
     args = ["osascript", "-", f'{Path(dst).absolute()}/']
     kwargs = dict(stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -18,7 +18,7 @@ def refresh_meta(dst: str | Path):
     out = out.decode('utf-8').rstrip()
     try:
         state, name, artist, a_type = [x.lstrip() for x in out.split(',')]
-        logging.debug(f'status: {state} | {name} - {artist}')
+        logging.info(f'status: {state} | {name} - {artist}')
     except Exception as err:
         logging.error(f'error: {err}')
         return
@@ -29,13 +29,14 @@ def refresh_meta(dst: str | Path):
 
 
 if __name__ == "__main__":
-    # logging
-    logging.basicConfig(level=logging.DEBUG)
-
     # parser
     parser = ArgumentParser()
     parser.add_argument('--dst', type=str, default='tmp', help='meta output folder')
+    parser.add_argument('--log', type=str, default='info', help='log filter level')
     args = parser.parse_args()
+
+    # logging
+    logging.basicConfig(level=getattr(logging, args.log.upper()))
 
     # jobs
     schedule.every(2).seconds.do(refresh_meta, dst=args.dst)
