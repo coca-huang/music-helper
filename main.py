@@ -33,13 +33,14 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--dst', type=str, default='tmp', help='meta output folder')
     parser.add_argument('--log', type=str, default='info', help='log filter level')
+    parser.add_argument('--interval', type=int, default=2, help='refresh interval x(seconds)')
     args = parser.parse_args()
 
     # logging
     logging.basicConfig(level=getattr(logging, args.log.upper()))
 
     # jobs
-    schedule.every(2).seconds.do(refresh_meta, dst=args.dst)
+    schedule.every(args.interval).seconds.do(refresh_meta, dst=args.dst)
 
     # scheduler
     while True:
