@@ -2,10 +2,10 @@ on run {args}
 	tell application "Music"
 		try
 			-- get music state
-			if player state is not stopped then
-				set MusicState to "playing"
-			else
+			if player state is paused then
 				set MusicState to "paused"
+			else
+				set MusicState to "playing"
 			end if
 			-- get music name and artist
 			set MusicName to name of current track
